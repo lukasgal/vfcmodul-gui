@@ -1,0 +1,132 @@
+import de.usu.patch_manager.tools.ModuleInfoCreator
+import de.usu.patch_manager.utils.ArchiveContext
+
+buildscript {
+    ext.repositoryRoot = 'http://10.2.71.7/nexus/content'
+    ext.publishUser = 'deployment' 
+    ext.publishPwd = 'nexus'
+	ext.moduleBranch='BMW'
+	ext.overrideOrigins='STD,BMW'
+	version='1.0.0-SNAPSHOT'
+
+	try {
+		println "buildNumber = " + ext.buildNr.toString()
+	} catch (exc) {
+		ext.buildNr='dev'
+	}
+
+    repositories {
+        maven {
+            url "${repositoryRoot}/groups/public"
+        }
+    }
+
+    dependencies {
+        classpath 'de.usu.kcenter:usu-build-support:2.0.8'
+        classpath 'de.usu.kcenter:usu-patch-maker:1.0.0-SNAPSHOT'
+        classpath 'de.usu.kcenter:usu-patchmanager:1.0.6'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'de.usu.kcenter.build'
+apply plugin: 'maven'
+apply plugin:'war'
+
+
+
+
+group = 'de.usu.kcenter.custom.BMW'
+archivesBaseName='vfcmodul-gui'
+description = 'BMW Mocked VFC SaSS application'
+project.ext.applicationName = 'vfcmodul-gui'
+
+repositories {
+    maven {
+        url "${repositoryRoot}/groups/public"
+    }
+
+}
+
+dependencies {
+    runtimeOnly project(':backend')
+}
+
+ext.handleVersion()
+
+war.dependsOn ':frontend:build'
+
+war {
+    archiveName = project.property('archiveName')
+    from "$rootDir/frontend/build"
+    webInf {        
+        from "$rootDir/backend/src/main/webapp/WEB-INF/"
+        include 'web.xml', 'config/**/*'
+    }
+    outputs.upToDateWhen { false }
+}
+
+task warWithModuleInfo(dependsOn: war) {
+	description = 'Generated WAR with module_info.txt'
+	group = 'USU'
+
+	ext.destFile = new File(buildDir, "moduleInfoWar/${tasks.war.getArchiveName()}")
+	ext.moduleInfoFile = new File(buildDir, "moduleInfoWar/module_info.txt")
+	outputs.file destFile
+	doLast {
+		ArchiveContext.runCodeWithArchiveContext({->
+			ModuleInfoCreator mic = new ModuleInfoCreator();
+			mic.setModuleName(project.ext.applicationName);
+			mic.setModuleVersion(project.tobeBuiltVersion);
+			mic.setModuleBranch(project.ext.moduleBranch);
+			if (rootProject.hasProperty('overrideOrigins') && rootProject.overrideOrigins != '') {
+				mic.setOverrideOrigins(Arrays.asList(project.overrideOrigins.split('\\s*,\\s*')));
+            }
+			mic.setPathOfModuleInfo("WEB-INF");
+			//declare which files in supervised directories are local (always customer specific)
+			mic.localFile('WEB-INF/config/gatekeeper.domain.properties')
+			mic.localFile('WEB-INF/config/gatekeeper.local.properties')
+			mic.localFile('WEB-INF/config/gatekeeper.properties')
+
+			List ignoredDirectories = []
+			ignoredDirectories.add('WEB-INF/patches')
+			//it is copied from ear/webapp/WEB-INF/cfg and is here to make KCX running with one mandator.
+			//These directory is part of local mandator data don't supervise it
+			ignoredDirectories.add('WEB-INF/toolkit')
+			mic.createWarWithModuleInfo(tasks.war.getArchivePath(), destFile, {path->
+				for (ignoredPath in ignoredDirectories) {
+					if (path.startsWith(ignoredPath)) {
+						return false
+					}
+				}
+				return true
+			}, moduleInfoFile);
+		});
+	}
+}
+
+
+artifacts {
+    archives(warWithModuleInfo.destFile) {
+		name archivesBaseName
+		type 'war'
+		builtBy warWithModuleInfo
+	}
+}
+
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			// repository(url: "${repositoryRoot}/repositories/releases/") {
+			// 	authentication(userName: "${publishUser}", password: "${publishPwd}")
+			// }
+			// snapshotRepository(url: "${repositoryRoot}/repositories/snapshots/") {
+			// 	authentication(userName: "${publishUser}", password: "${publishPwd}")
+			// }
+
+            repository(url: "file:/c:/WS/repositories/releases/")
+			snapshotRepository(url: "file:/c:/WS/repositories/snapshots/")
+		}
+	}
+}
