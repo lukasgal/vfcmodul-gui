@@ -1,0 +1,23 @@
+buildscript  {
+
+    repositories {
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath "com.github.node-gradle:gradle-node-plugin:7.0.2"
+    }
+
+}
+
+apply plugin: 'com.github.node-gradle.node'
+apply plugin: 'base'
+
+
+task appNpmBuild(type: NpxTask) {
+    dependsOn npmInstall
+    command = 'react-scripts'
+    args = ['build']
+}
+
+assemble.dependsOn(appNpmBuild)

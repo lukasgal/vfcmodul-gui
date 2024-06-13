@@ -1,0 +1,8 @@
+.App {
+  padding: 5px;
+}
+
+.h-columns {
+    display: flex;
+    flex-direction: row;
+}

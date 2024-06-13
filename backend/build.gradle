@@ -1,0 +1,25 @@
+apply plugin:'war'
+
+repositories {
+    maven {
+        url "http://10.2.71.7/nexus/content/groups/public"
+        allowInsecureProtocol = true
+    }
+
+}
+
+dependencies {
+    runtimeOnly project(':frontend')
+    implementation 'de.usu.kcenter:usu-gatekeeper:3.5.12-BMWRSA-35'
+	implementation 'org.slf4j:slf4j-log4j12:1.7.14'
+}
+
+war.dependsOn ':frontend:build'
+
+war {
+    archiveFileName = project.property('archiveName')
+    webAppDirectory = file('src/main/webapp')
+    from "$rootDir/frontend/build"
+
+    outputs.upToDateWhen { false }
+}

@@ -1,0 +1,11 @@
+{
+    "tabFreeTextEnty": "Freitextangabe",
+    "tabTreeView": "Auswahl über Baumstruktur",
+    "defectPlace": "Fehlerort",
+    "defectType": "Fehlerart",
+    "defectLocationVehicle": "Fehlerlage Fahrzeug",
+    "defectLocationPart": "Fehlerlage Bauteil",
+    "defectCondition": "Fehlerbedingung",
+    "selectedDefectSymptom" : "Ausgewählte Fehlerbild"
+  }
+  

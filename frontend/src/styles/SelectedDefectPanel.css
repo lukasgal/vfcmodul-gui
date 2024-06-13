@@ -1,0 +1,17 @@
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.deleteIcon {
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.resultItem {
+  line-height: 1;
+  margin-bottom: 2px;
+}

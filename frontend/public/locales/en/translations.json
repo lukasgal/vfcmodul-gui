@@ -1,0 +1,10 @@
+{
+  "tabFreeTextEnty": "Free-text entry",
+  "tabTreeView": "Select using tree structure",
+  "defectPlace": "Defect place",
+  "defectType": "Defect type",
+  "defectLocationVehicle": "Defect location, vehicle",
+  "defectLocationPart": "Defect location, part",
+  "defectCondition": "Defect condition",
+  "selectedDefectSymptom": "Selected defect symptom"
+}

@@ -1,0 +1,18 @@
+.panel {
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panelTitle {
+    background-color: #999999;
+    color: white;
+    padding : 1px 5px;
+    font-weight: 600;
+}
+
+.pannelContent {
+    padding: 5px;
+}
