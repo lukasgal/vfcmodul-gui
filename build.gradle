@@ -118,15 +118,15 @@ artifacts {
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			// repository(url: "${repositoryRoot}/repositories/releases/") {
-			// 	authentication(userName: "${publishUser}", password: "${publishPwd}")
-			// }
-			// snapshotRepository(url: "${repositoryRoot}/repositories/snapshots/") {
-			// 	authentication(userName: "${publishUser}", password: "${publishPwd}")
-			// }
+			repository(url: "${repositoryRoot}/repositories/releases/") {
+			 	authentication(userName: "${publishUser}", password: "${publishPwd}")
+			}
+			snapshotRepository(url: "${repositoryRoot}/repositories/snapshots/") {
+			 	authentication(userName: "${publishUser}", password: "${publishPwd}")
+			}
 
-            repository(url: "file:/c:/WS/repositories/releases/")
-			snapshotRepository(url: "file:/c:/WS/repositories/snapshots/")
+            //repository(url: "file:/c:/WS/repositories/releases/")
+			//snapshotRepository(url: "file:/c:/WS/repositories/snapshots/")
 		}
 	}
 }
