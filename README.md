@@ -1,6 +1,11 @@
 vfcmodul-gui:1.0.0
 ===
 App used by BMW project to simulate real app used to add VFC Objects into ServiceSolution documents.
+
+
+> **For using of this tool on DEV/INT environment install the latest WAR from Nexus. You don't have to clone repository.**
+
+
 ## Development
 - /frontend - [README.md](frontend/README.md)
 - /backend - contains only web structure to run on Tomcat server
