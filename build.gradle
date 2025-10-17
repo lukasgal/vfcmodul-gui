@@ -2,11 +2,11 @@ import de.usu.patch_manager.tools.ModuleInfoCreator
 import de.usu.patch_manager.utils.ArchiveContext
 
 buildscript {
-    ext.repositoryRoot = 'http://10.2.71.7/nexus/content'
+    ext.repositoryRoot = ''
     ext.publishUser = 'deployment' 
-    ext.publishPwd = 'nexus'
-	ext.moduleBranch='BMW'
-	ext.overrideOrigins='STD,BMW'
+    ext.publishPwd = ''
+	ext.moduleBranch=''
+	ext.overrideOrigins='STD'
 	version='1.0.0-SNAPSHOT'
 
 	try {
